@@ -5,7 +5,7 @@
 
 # Move to a separate file eventually
 def printHelpMenu():
-    print("===============================================")
+    print("=================================================================")
     print("Available commands:")
     print(" load - load a wind file")
     print(" loadg - load a gcode file")
@@ -13,20 +13,22 @@ def printHelpMenu():
     print(" plot - plot a gcode file")
     print(" write - save a gcode file")
     print(" quit - terminate this session")
-    print("===============================================")
+    print("=================================================================")
 
 
 
 
 
 # Welcome message
-print("Welcome to the Swamp Launch Filament Winder Gcode Generator")
-print("Please enter a command, or type 'help' for a list of commands")
-print("---")
+print("=================================================================")
+print("| Welcome to the Swamp Launch Filament Winder Gcode Generator   |")
+print("| Please enter a command, or type 'help' for a list of commands |")
+print("=================================================================")
 
 # Take user input until quit
 userInput = ""
-while (userInput != "quit"):
+quit = False
+while (not quit):
 
     userInput = input()
 
@@ -49,10 +51,16 @@ while (userInput != "quit"):
     elif (userInput == "plot"):
         print("plot selected")
         # TODO: implement plot
-        
+
     elif (userInput == "write"):
         print("write selected")
         # TODO: implement write
+
+    elif (userInput == "quit"):
+        confirmation = input("Are you sure you want to quit? Any unsaved data will be lost. (y/n) ")
+        if (confirmation == "y"):
+            quit = True
+        
 
 
 
