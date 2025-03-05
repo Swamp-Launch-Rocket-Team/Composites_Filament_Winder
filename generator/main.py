@@ -3,14 +3,17 @@
 #   Rylan Andrews, 2024-2025 Spaceport Composites Lead
 
 import helper
+import machine
+import definitions
 
-# Welcome message
-print("=================================================================")
-print("| Welcome to the Swamp Launch Filament Winder Gcode Generator   |")
-print("| Please enter a command, or type 'help' for a list of commands |")
-print("=================================================================")
 
 def main():
+    # Welcome message
+    print("=================================================================")
+    print("| Welcome to the Swamp Launch Filament Winder Gcode Generator   |")
+    print("| Please enter a command, or type 'help' for a list of commands |")
+    print("=================================================================")
+
     # Take user input until quit
     userInput = ""
     quit = False
