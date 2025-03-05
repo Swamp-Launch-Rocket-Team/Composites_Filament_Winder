@@ -2,65 +2,55 @@
 # Authors:
 #   Rylan Andrews, 2024-2025 Spaceport Composites Lead
 
+import helper
+import machine
+import definitions
 
-# Move to a separate file eventually
-def printHelpMenu():
+
+def main():
+    # Welcome message
     print("=================================================================")
-    print("Available commands:")
-    print(" load - load a wind file")
-    print(" loadg - load a gcode file")
-    print(" generate - generate gcode from a wind file")
-    print(" plot - plot a gcode file")
-    print(" write - save a gcode file")
-    print(" quit - terminate this session")
+    print("| Welcome to the Swamp Launch Filament Winder Gcode Generator   |")
+    print("| Please enter a command, or type 'help' for a list of commands |")
     print("=================================================================")
 
+    # Take user input until quit
+    userInput = ""
+    quit = False
+    while (not quit):
 
+        userInput = input()
 
+        # Command tree
+        if (userInput == "help"):
+            helper.printHelpMenu()
 
+        elif (userInput == "load"):
+            print("load selected")
+            # TODO: implement load
 
-# Welcome message
-print("=================================================================")
-print("| Welcome to the Swamp Launch Filament Winder Gcode Generator   |")
-print("| Please enter a command, or type 'help' for a list of commands |")
-print("=================================================================")
+        elif (userInput == "loadg"):
+            print("loadg selected")
+            # TODO: implement loadg
 
-# Take user input until quit
-userInput = ""
-quit = False
-while (not quit):
+        elif (userInput == "generate"):
+            print("generate selected")
+            # TODO: implement generate
 
-    userInput = input()
+        elif (userInput == "plot"):
+            print("plot selected")
+            # TODO: implement plot
 
-    # Command tree
-    if (userInput == "help"):
-        printHelpMenu()
+        elif (userInput == "write"):
+            print("write selected")
+            # TODO: implement write
 
-    elif (userInput == "load"):
-        print("load selected")
-        # TODO: implement load
-
-    elif (userInput == "loadg"):
-        print("loadg selected")
-        # TODO: implement loadg
-
-    elif (userInput == "generate"):
-        print("generate selected")
-        # TODO: implement generate
-
-    elif (userInput == "plot"):
-        print("plot selected")
-        # TODO: implement plot
-
-    elif (userInput == "write"):
-        print("write selected")
-        # TODO: implement write
-
-    elif (userInput == "quit"):
-        confirmation = input("Are you sure you want to quit? Any unsaved data will be lost. (y/n) ")
-        if (confirmation == "y"):
-            quit = True
+        elif (userInput == "quit"):
+            confirmation = input("Are you sure you want to quit? Any unsaved data will be lost. (y/n) ")
+            if (confirmation == "y"):
+                quit = True
         
 
-
+# Actually call main function
+main()
 
