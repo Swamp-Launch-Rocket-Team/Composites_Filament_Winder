@@ -5,8 +5,8 @@
 class Machine():
 
     def __init__(self, mandrelDiameter, xLimit):
-        self.mandrelDiameter = mandrelDiameter
-        self.xLimit = xLimit
+        self.mandrelDiameter: int = mandrelDiameter
+        self.xLimit: int = xLimit
 
     def move(x, y):
         # Stuff here

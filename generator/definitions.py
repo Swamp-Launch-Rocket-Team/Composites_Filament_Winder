@@ -10,7 +10,7 @@ class WindType(Enum):
 class Ply():
 
     def __init__(self, windType):
-        self.windType = windType
+        self.windType: WindType = windType
         # Add other features for a general ply
 
 
