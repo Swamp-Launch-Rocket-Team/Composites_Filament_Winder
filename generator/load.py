@@ -23,9 +23,13 @@ class Loader:
         elif isinstance(data, list): return [self._to_obj(item) for item in data]  # convert each item in the list if it's a dictionary
         else: return data  # if it's not a dictionary or list, return it as is
 
-# example usage:
+#examples
 loader = Loader()  # opens a file dialog, loads the selected json/wind file
 print(loader.towParameters.width)  # prints the 'width' field inside 'towParameters'
 print(loader.defaultFeedRate)  # prints the 'defaultFeedRate' field
 print(loader.layers[0].windType)  # prints the 'windType' of the first layer
 print(loader.layers[1].windAngle)  # prints the 'windAngle' of the second layer
+
+
+
+#i still dont get why we need the class stuff for this, if all we want to do is take a json and use its contents cant we just turn it into a basic python dictionary?
