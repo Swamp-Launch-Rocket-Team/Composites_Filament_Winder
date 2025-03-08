@@ -1,0 +1,15 @@
+{
+    "layers": [
+        {"windType": "hoop", "terminal": false},
+        {
+            "windType": "helical",
+            "windAngle": 55,
+            "patternNumber": 2
+        }
+    ],
+    "towParameters": {
+        "width": 7,
+        "thickness": 0.5
+    },
+    "defaultFeedRate": 9000
+}
