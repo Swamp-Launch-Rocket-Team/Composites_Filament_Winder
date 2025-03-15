@@ -3,7 +3,7 @@
 #   Rylan Andrews, 2024-2025 Spaceport Composites Lead
 
 import helper
-import machine
+import generator.Winder as Winder
 import definitions
 
 
