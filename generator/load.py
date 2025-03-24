@@ -33,3 +33,20 @@ print(loader.layers[1].windAngle)  # prints the 'windAngle' of the second layer
 
 
 #i still dont get why we need the class stuff for this, if all we want to do is take a json and use its contents cant we just turn it into a basic python dictionary?
+'''
+no oop alternative
+
+import json
+import tkinter as tk
+from tkinter import filedialog
+
+root = tk.Tk()
+root.withdraw()
+file_path = filedialog.askopenfilename(
+    title="Select JSON/Wind file",
+    filetypes=[("JSON/Wind files", "*.json *.wind"), ("All files", "*.*")]
+)
+
+with open(file_path, 'r') as f:
+    data = json.load(f)
+'''

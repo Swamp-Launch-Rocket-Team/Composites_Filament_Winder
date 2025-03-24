@@ -28,7 +28,7 @@ def main():
 
         elif (userInput == "load"):
             print("load selected")
-            # TODO: implement load
+            # TODO: implement load ASSIGNED TO ABEER
 
         elif (userInput == "loadg"):
             print("loadg selected")
