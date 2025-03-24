@@ -3,7 +3,8 @@
 #   Rylan Andrews, 2024-2025 Spaceport Composites Lead
 
 import helper
-import generator.Winder as Winder
+
+import winder
 import definitions
 
 
@@ -44,6 +45,9 @@ def main():
         elif (userInput == "write"):
             print("write selected")
             # TODO: implement write
+
+        elif (userInput == "calculator"):
+            helper.calculator()
 
         elif (userInput == "quit"):
             confirmation = input("Are you sure you want to quit? Any unsaved data will be lost. (y/n) ")

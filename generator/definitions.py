@@ -11,15 +11,30 @@ class WindType(Enum):
 
 class Ply():
 
-    def __init__(self, windType):
+    def __init__(self, windType, windLength, towWidth, towThickness):
         # Specify either a hoop or helical wind
         self.windType = windType
+        self.windLength = windLength
+        self.towWidth = towWidth
+        self.towThickness = towThickness
+
+    def getType(self):
+        return self.windType
+    
+    def getWindLength(self):
+        return self.windLength
+    
+    def getWidth(self):
+        return self.towWidth
+    
+    def getThickness(self):
+        return self.towThickness
 
 
 class HoopWind(Ply):
 
-    def __init__(self, isSinglePass):
-        super().__init__(windType=WindType.HOOP)
+    def __init__(self, windLength, towWidth, towThickness, isSinglePass):
+        super().__init__(WindType.HOOP, windLength, towWidth, towThickness)
 
         # Specify if this should be a single pass, as in the case of taping
         self.isSinglePass = isSinglePass
@@ -27,8 +42,8 @@ class HoopWind(Ply):
 
 class HelicalWind(Ply):
     
-    def __init__(self, windAngle, numStarts, skipIndex, lockAngle, leadInLength, leadOutLength, skipInitialLock):
-        super().__init__(windType=WindType.HELICAL)
+    def __init__(self, windLength, towWidth, towThickness, windAngle, numStarts, skipIndex, lockAngle, leadInLength, leadOutLength, skipInitialLock):
+        super().__init__(WindType.HELICAL, windLength, towWidth, towThickness)
 
         # Angle of the helical wind
         # Defined as the angle between the mandrel axis and the wind tow
@@ -56,5 +71,21 @@ class HelicalWind(Ply):
 
         # If this helical layer follows a previous helical layer, skip the lock wind at the beginning
         self.skipInitialLock = skipInitialLock
+
+
+    def getWindAngle(self):
+        return self.windAngle
+
+
+    def getNumStarts(self):
+        return self.numStarts
+
+
+    def getLockAngle(self):
+        return self.lockAngle
+    
+
+    def doSkipInitialLock(self):
+        return self.skipInitialLock
         
 
