@@ -18,16 +18,16 @@ class Ply():
         self.towWidth = towWidth
         self.towThickness = towThickness
 
-    def getType(self):
+    def getType(self) -> WindType:
         return self.windType
     
-    def getWindLength(self):
+    def getWindLength(self) -> float:
         return self.windLength
     
-    def getWidth(self):
+    def getWidth(self) -> float:
         return self.towWidth
     
-    def getThickness(self):
+    def getThickness(self) -> float:
         return self.towThickness
 
 
@@ -73,19 +73,19 @@ class HelicalWind(Ply):
         self.skipInitialLock = skipInitialLock
 
 
-    def getWindAngle(self):
+    def getWindAngle(self) -> float:
         return self.windAngle
 
 
-    def getNumStarts(self):
+    def getNumStarts(self) -> int:
         return self.numStarts
 
 
-    def getLockAngle(self):
+    def getLockAngle(self) -> float:
         return self.lockAngle
     
 
-    def doSkipInitialLock(self):
+    def doSkipInitialLock(self) -> bool:
         return self.skipInitialLock
         
 

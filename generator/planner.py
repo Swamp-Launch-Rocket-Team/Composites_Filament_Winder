@@ -27,11 +27,11 @@ def planHoopWind(layer, machine):
     # TODO: implement logic for a hoop wind
     return
 
-def planHelicalWind(layer, machine):
+def planHelicalWind(layer: definitions.HelicalWind, machine: winder.Winder):
     # Compute important wind information
     mandrelCircumference = math.pi * machine.getDiameter()          # Mandrel diameter, [in]
     windLength = layer.getWindLength()                              # Wind length, [in]
-    towWidth = layer.getTowWidth()                                  # Tow width, [in]
+    towWidth = layer.getWidth()                                  # Tow width, [in]
     windAngle = layer.getWindAngle()                                # Wind angle, [deg]
     numStarts = layer.getNumStarts()                                # Number of starts (integer)
     lockAngle = layer.getLockAngle()                                # Lock angle, [deg]
@@ -67,6 +67,8 @@ def planHelicalWind(layer, machine):
         return
 
     # Perform a lock wind
+    if (not skipInitialLock):
+        machine.moveBy(dx=0, dz=lockAngle)
 
     # Loop for each pattern
     for i in range(numPatterns):
