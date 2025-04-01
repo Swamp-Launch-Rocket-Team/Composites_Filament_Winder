@@ -20,7 +20,7 @@ def main():
     quit = False
     while (not quit):
 
-        userInput = input()
+        userInput = input("(enter command or 'quit'): ")
 
         # Command tree
         if (userInput == "help"):
