@@ -2,13 +2,17 @@
 
 import math
 
-import generator.definitions as definitions
-import generator.winder as winder
+import definitions
+import winder
 
 
 
-def planWind(schedule, machine):
-    print("do something")
+def planWind(schedule, machine: winder.Winder):
+
+    # Set location as zero
+    machine.zero()
+    # Set default feed rate
+    machine.setFeedRate(0.5)
 
     for layer in schedule:
         if (layer.getType() == definitions.WindType.HOOP):
@@ -18,8 +22,6 @@ def planWind(schedule, machine):
         else:
             print('Error: layer not recognized as a valid type')
 
-
-
     return machine.getGcode()            
 
 
@@ -27,11 +29,11 @@ def planHoopWind(layer, machine):
     # TODO: implement logic for a hoop wind
     return
 
-def planHelicalWind(layer, machine):
+def planHelicalWind(layer: definitions.HelicalWind, machine: winder.Winder):
     # Compute important wind information
     mandrelCircumference = math.pi * machine.getDiameter()          # Mandrel diameter, [in]
     windLength = layer.getWindLength()                              # Wind length, [in]
-    towWidth = layer.getTowWidth()                                  # Tow width, [in]
+    towWidth = layer.getWidth()                                     # Tow width, [in]
     windAngle = layer.getWindAngle()                                # Wind angle, [deg]
     numStarts = layer.getNumStarts()                                # Number of starts (integer)
     lockAngle = layer.getLockAngle()                                # Lock angle, [deg]
@@ -56,7 +58,7 @@ def planHelicalWind(layer, machine):
     passAngle = (windLength * math.tan(windAngle)) * (360 / mandrelCircumference)
 
     # How many patterns must be completed to cover the mandrel
-    numPatterns = numCircuits / numStarts
+    numPatterns = int(numCircuits / numStarts)
 
     # Confirm pattern number and pass number work together
     if (numCircuits % numStarts != 0):
@@ -65,12 +67,37 @@ def planHelicalWind(layer, machine):
         print('-------------------------------------------------------------------------------------')
         print('This layer will be skipped.')
         return
-
+    
     # Perform a lock wind
+    if (not skipInitialLock):
+        machine.moveBy(dx=0, dz=lockAngle)
 
     # Loop for each pattern
     for i in range(numPatterns):
-    #   Loop for each start
+        # Reset the z axis to prevent very large numbers
+        machine.setAxes(x=machine.X, z=0)
+
+        # Loop for each start
         for j in range(numStarts):
-    #       Perform a there and back pass
-            return
+            # Insert a comment
+            machine.pushComment("Pattern: " + str(i) + "/" + str(numPatterns) + " Circuit: " + str(j) + "/" + str(numStarts))
+
+            # Wind down the mandrel
+            machine.moveBy(dx=windLength, dz=passAngle)
+
+            # Perform lock wind
+            machine.moveBy(dx=0, dz=(lockAngle - (passAngle % 360)) )
+
+            # Wind up the mandrel
+            machine.moveBy(dx=-windLength, dz=passAngle)
+
+            # Perform another lock wind
+            machine.moveBy(dx=0, dz=(lockAngle - (passAngle % 360)) )
+
+            # Move to next start position
+            machine.moveBy(dx=0, dz=(passStepAngle * numCircuits / numStarts))
+
+        # Move to the next pattern location
+        machine.moveBy(dx=0, dz=passStepAngle)
+
+    

@@ -14,20 +14,20 @@ class Ply():
     def __init__(self, windType, windLength, towWidth, towThickness):
         # Specify either a hoop or helical wind
         self.windType = windType
-        self.windLength = windLength
-        self.towWidth = towWidth
-        self.towThickness = towThickness
+        self.windLength = float(windLength)
+        self.towWidth = float(towWidth)
+        self.towThickness = float(towThickness)
 
-    def getType(self):
+    def getType(self) -> WindType:
         return self.windType
     
-    def getWindLength(self):
+    def getWindLength(self) -> float:
         return self.windLength
     
-    def getWidth(self):
+    def getWidth(self) -> float:
         return self.towWidth
     
-    def getThickness(self):
+    def getThickness(self) -> float:
         return self.towThickness
 
 
@@ -48,44 +48,44 @@ class HelicalWind(Ply):
         # Angle of the helical wind
         # Defined as the angle between the mandrel axis and the wind tow
         # i.e., a length of tow running straight from one end of the mandrel to the other would have an angle of zero degrees
-        self.windAngle = windAngle
+        self.windAngle = float(windAngle)
 
         # Each circuit will perform a pass going down the mandrel and coming back. The next pass will not be started immediately adjacent 
         # to the previous pass, and will instead start at a new start position some angle off from the previous start position.
         # Once a pass has been completed at each start position, a "pattern" is completed. Subsequent patterns will be completed
         # to cover the mandrel completely (the number of patterns required is determined by tow width).
         # This parameter determines the number of start positions
-        self.numStarts = numStarts
+        self.numStarts = int(numStarts)
 
         # The number of start positions to skip to find the next start position
         # Currently unused
-        self.skipIndex = skipIndex
+        self.skipIndex = int(skipIndex)
 
         # The angle through which to turn the mandrel at the end of each pass. Usually 720 degrees
-        self.lockAngle = lockAngle
+        self.lockAngle = int(lockAngle)
 
         # If some intermediate lead-in or lead-out length is desired, it is specified here
         # Currently unused
-        self.leadInLength = leadInLength
-        self.leadOutLength = leadOutLength
+        self.leadInLength = float(leadInLength)
+        self.leadOutLength = float(leadOutLength)
 
         # If this helical layer follows a previous helical layer, skip the lock wind at the beginning
-        self.skipInitialLock = skipInitialLock
+        self.skipInitialLock = bool(skipInitialLock)
 
 
-    def getWindAngle(self):
+    def getWindAngle(self) -> float:
         return self.windAngle
 
 
-    def getNumStarts(self):
+    def getNumStarts(self) -> int:
         return self.numStarts
 
 
-    def getLockAngle(self):
+    def getLockAngle(self) -> float:
         return self.lockAngle
     
 
-    def doSkipInitialLock(self):
+    def doSkipInitialLock(self) -> bool:
         return self.skipInitialLock
         
 

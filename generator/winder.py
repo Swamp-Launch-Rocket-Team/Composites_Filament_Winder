@@ -8,6 +8,8 @@
 #   - GRBL does not allow for additional rotational axes. For a future expansion to a four-axis machine,
 #     a different firmware will likely be required.
 
+import json
+
 
 class Winder():
 
@@ -16,39 +18,95 @@ class Winder():
 
         self.defaultFeedrate = defaultFeedrate
 
+        self.X = 0
+        self.Z = 0
+
         self.gcode = []
 
+
+    # Loads information about the filament winder from a config file
     def loadMachineConfig():
-        # TODO: load machine information from config file
+        configFile = open('machine_config.json')
+
+        machineData = json.load(configFile)
+
+        mandrelDiameter = machineData['mandrel_diameter']
+        mandrelLength = machineData['mandrel_length']
+        xLimit = machineData['x_limit']
 
         return [mandrelDiameter, mandrelLength, xLimit]
     
-    def home(self):
+
+    def moveHome(self):
         self.gcode.append("G28")
 
+
+    # Set the axes to zero
     def zero(self):
-        # TODO: figure out how to reset the axes to zero
-        self.pushComment("dummy comment")
-
-    def setAxes(self, x, z):
-        # TODO: figure out how to set the axes to x and z
-        self.pushComment("dummy comment")
+        self.setAxes(0, 0)
 
 
-    def move(self, x, z):
-        # Stuff here
+    # Set the axes to the specified X and Z value
+    def setAxes(self, x, z) -> None:
+        self.X = x
+        self.Z = z
+
+        command = "G92 X" + str(round(x, 3)) + " Z" + str(round(z, 3))
+        self.gcode.append(command)
+
+
+    # Actuates each axis by the specified amount
+    def moveBy(self, dx, dz) -> None:
+        if (self.outOfBounds(self.X + dx, self.Z + dz)):
+            print("Error: Location is out of bounds")
+            return
+        
+        self.X = self.X + dx
+        self.Z = self.Z + dz
+
+        command = "G01 X" + str(round(self.X, 3)) + " Z" + str(round(self.Z, 3))
+        self.gcode.append(command)
+
+        return
+
+
+    # Moves to the specified location
+    def moveTo(self, x, z) -> None:
+        if (self.outOfBounds(x, z)):
+            print("Error: Location is out of bounds")
+            return
+        
+        self.X = x
+        self.Z = z
+
+        command = "G01 X" + str(round(self.X, 3)) + " Z" + str(round(self.Z, 3))
+        self.gcode.append(command)
+
         return
     
+    
+    def setFeedRate(self, f) -> None:
+        self.gcode.append("G01 F" + str(round(f, 3)))
+    
+
     def pushComment(self, comment):
         self.gcode.append("(" + comment + ")")
     
+
     def getProperties(self):
         return {'diameter': self.mandrelDiameter,
                 'length': self.mandrelLength,
                 'xLimit': self.xLimit}
     
+
     def getGcode(self):
         return self.gcode
     
-    def getDiameter(self):
+
+    def getDiameter(self) -> float:
         return self.mandrelDiameter
+    
+
+    # Checks if location is within winder movement area
+    def outOfBounds(self, x, z) -> bool:
+        return x < 0 or x > self.xLimit
