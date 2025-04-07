@@ -5,13 +5,23 @@ from tkinter import filedialog  # import filedialog to let user pick a file
 
 class Loader:
     def __init__(self):  # constructor- no arguments needed, always opens a file dialog
+        self.isError = False
+
         root = tk.Tk()  # create a small tkinter window because thats needed apparantly
         root.withdraw()  # hide the window since we only need the file dialog
-        file_path = filedialog.askopenfilename(  # open a file selection window
+        self.file_path = filedialog.askopenfilename(  # open a file selection window
             title="Select JSON/Wind file",  # title of the file dialog
             filetypes=[("JSON/Wind files", "*.json *.wind"), ("All files", "*.*")]  # allow json/wind files and all files
         )
-        with open(file_path, 'r') as f: data = json.load(f)  # open file, read it, and convert json into a dictionary
+
+        # Error checking on file path
+        if (self.file_path == ''):
+            print("Error: No file selected")
+            self.isError = True
+            return
+
+        with open(self.file_path, 'r') as f: data = json.load(f)  # open file, read it, and convert json into a dictionary
+
         obj = self._to_obj(data)  # convert the dictionary into an object for the dot notation access thingy
         self.__dict__.update(obj.__dict__)  # copy the attributes from the converted object into this one
 
@@ -24,11 +34,13 @@ class Loader:
         else: return data  # if it's not a dictionary or list, return it as is
 
 #examples
+'''
 loader = Loader()  # opens a file dialog, loads the selected json/wind file
 print(loader.towParameters.width)  # prints the 'width' field inside 'towParameters'
 print(loader.defaultFeedRate)  # prints the 'defaultFeedRate' field
 print(loader.layers[0].windType)  # prints the 'windType' of the first layer
 print(loader.layers[1].windAngle)  # prints the 'windAngle' of the second layer
+'''
 
 
 

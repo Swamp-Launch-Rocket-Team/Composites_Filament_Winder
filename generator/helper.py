@@ -2,7 +2,9 @@
 
 import math
 
+import definitions
 import winder
+import load
 
 
 def printHelpMenu():
@@ -22,11 +24,53 @@ def printHelpMenu():
 
 # Loads the wind file that specifies the layup schedule
 def loadWindFile():
-    # TODO: implement load wind file helper function
+    # Load the wind file
+    loader = load.Loader()
 
-    return [schedule, towParameters, defaultFeedRate]
+    # Check successful open
+    if loader.isError:
+        print("Failed to read wind definition")
+        return [None, None]
+    
+    # Print file name
+    print("Loading from " + loader.file_path)
+    print("---")
 
-def generateWind(schedule, towParameters, defaultFeedRate):
+
+    # Load basic details
+    length = float(loader.length)
+    defaultFeedRate = float(loader.defaultFeedRate)
+
+    # Load layers
+    schedule = []
+    for layer in loader.layers:
+        if (layer.windType == "hoop"):
+            schedule.append(definitions.HoopWind(length, layer.towWidth, layer.towThickness, layer.terminal))
+        elif (layer.windType == "helical"):
+            schedule.append(definitions.HelicalWind(length, layer.towWidth, layer.towThickness, layer.windAngle, layer.numStarts, 
+                                                    layer.skipIndex, layer.lockAngle, layer.leadInLength, layer.leadOutLength, layer.skipInitialLock))
+        else:
+            print("\tInvalid wind type: " + layer.windType)
+
+    # Print confirmation
+    print("Basic Wind Information:")
+    print("\tLength:\t\t\t" + str(length))
+    print("\tDefault Feed Rate: \t" + str(defaultFeedRate))
+    print("Layer Information:")
+    for layer in schedule:
+        if (layer.getType() == definitions.WindType.HOOP):
+            print("\tLAYER TYPE: HOOP")
+            print("\t\tTow Width: \t" + str(layer.getWidth()))
+            print("\t\tTow Thickness: \t" + str(layer.getThickness()))
+        elif (layer.getType() == definitions.WindType.HELICAL):
+            print("\tLAYER TYPE: HELICAL")
+            print("\t\tTow Width: \t" + str(layer.getWidth()))
+            print("\t\tTow Thickness: \t" + str(layer.getThickness()))
+            print("\t\tWind Angle: \t" + str(layer.getWindAngle()))
+
+    return [schedule, defaultFeedRate]
+
+def generateWind(schedule, defaultFeedRate):
     machine = winder.Winder()
 
 def calculator():

@@ -2,8 +2,8 @@
 
 import math
 
-import generator.definitions as definitions
-import generator.winder as winder
+import definitions
+import winder
 
 
 
@@ -21,8 +21,6 @@ def planWind(schedule, machine: winder.Winder):
             planHelicalWind(layer, machine)
         else:
             print('Error: layer not recognized as a valid type')
-
-
 
     return machine.getGcode()            
 
@@ -60,7 +58,7 @@ def planHelicalWind(layer: definitions.HelicalWind, machine: winder.Winder):
     passAngle = (windLength * math.tan(windAngle)) * (360 / mandrelCircumference)
 
     # How many patterns must be completed to cover the mandrel
-    numPatterns = numCircuits / numStarts
+    numPatterns = int(numCircuits / numStarts)
 
     # Confirm pattern number and pass number work together
     if (numCircuits % numStarts != 0):
@@ -82,7 +80,7 @@ def planHelicalWind(layer: definitions.HelicalWind, machine: winder.Winder):
         # Loop for each start
         for j in range(numStarts):
             # Insert a comment
-            machine.pushComment("Pattern: " + str(i) + "/" + str(numPatterns) + " Circuit: " + str(numStarts) + "/" + str(j))
+            machine.pushComment("Pattern: " + str(i) + "/" + str(numPatterns) + " Circuit: " + str(j) + "/" + str(numStarts))
 
             # Wind down the mandrel
             machine.moveBy(dx=windLength, dz=passAngle)
@@ -100,6 +98,6 @@ def planHelicalWind(layer: definitions.HelicalWind, machine: winder.Winder):
             machine.moveBy(dx=0, dz=(passStepAngle * numCircuits / numStarts))
 
         # Move to the next pattern location
-        machine.moveBy(dx=0, dx=passStepAngle)
+        machine.moveBy(dx=0, dz=passStepAngle)
 
     

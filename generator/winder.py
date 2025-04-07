@@ -109,4 +109,4 @@ class Winder():
 
     # Checks if location is within winder movement area
     def outOfBounds(self, x, z) -> bool:
-        return x > 0 or x < self.xLimit
+        return x < 0 or x > self.xLimit

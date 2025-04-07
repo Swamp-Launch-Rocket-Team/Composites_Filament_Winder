@@ -3,9 +3,10 @@
 #   Rylan Andrews, 2024-2025 Spaceport Composites Lead
 
 import helper
-
 import winder
 import definitions
+import load
+import planner
 
 
 def main():
@@ -14,6 +15,12 @@ def main():
     print("| Welcome to the Swamp Launch Filament Winder Gcode Generator   |")
     print("| Please enter a command, or type 'help' for a list of commands |")
     print("=================================================================")
+
+    # Variables to track
+    schedule = []
+    defaultFeedRate = 0.005
+    machine = None
+    gcode = []
 
     # Take user input until quit
     userInput = ""
@@ -27,24 +34,24 @@ def main():
             helper.printHelpMenu()
 
         elif (userInput == "load"):
-            print("load selected")
-            # TODO: implement load ASSIGNED TO ABEER
+            [schedule, defaultFeedRate] = helper.loadWindFile()
 
         elif (userInput == "loadg"):
             print("loadg selected")
             # TODO: implement loadg
 
         elif (userInput == "generate"):
-            print("generate selected")
-            # TODO: implement generate
+            machine = winder.Winder(defaultFeedRate)
+            gcode = planner.planWind(schedule, machine)
 
         elif (userInput == "plot"):
             print("plot selected")
             # TODO: implement plot
 
         elif (userInput == "write"):
-            print("write selected")
-            # TODO: implement write
+            with open('windGcode.nc', 'w') as writeFile:
+                for line in gcode:
+                    writeFile.write(line + '\n')
 
         elif (userInput == "calculator"):
             helper.calculator()
